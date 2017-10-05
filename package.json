@@ -85,11 +85,11 @@
 	"author": "AGF",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/agf2000/w1buy/issues"
+		"url": "https://github.com/beta-agf2000/w1buy/issues"
 	},
-	"homepage": "https://github.com/agf2000/w1buy#readme",
+	"homepage": "https://github.com/beta-agf2000/w1buy#readme",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/agf2000/w1buy.git"
+		"url": "https://github.com/agf2000/beta-w1buy.git"
 	}
 }
