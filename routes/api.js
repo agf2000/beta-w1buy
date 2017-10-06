@@ -1,18 +1,20 @@
-const express = require("express");
+const express = require('express');
 const multer = require('multer');
 // const uuid = require("uuid");
 const fse = require('fs-extra');
 const path = require('path');
 const shortid = require('shortid');
-const peopleController = require("../controllers/peopleController.js");
-const postingController = require("../controllers/postingController.js");
-const messageController = require("../controllers/messageController.js");
+const peopleController = require('../controllers/peopleController');
+const postingController = require('../controllers/postingController');
+const messageController = require('../controllers/messageController');
+const psController = require('../controllers/psController');
 const ensureAuthenticated = require('../process/js/ensureAuthenticated');
 // const fs = require('fs');
 const thumb = require('node-thumbnail').thumb;
 // const fileMover = require('../public/javascripts/fileMover');
 // const notifier = require('node-notifier');
 // const growl = require('growl');
+const pagSeguro = require('pagseguro-nodejs');
 
 const router = express.Router();
 
@@ -221,6 +223,84 @@ router.delete('/removeMsg', function (req, res) {
 
 router.post('/saveReputation', function (req, res) {
     peopleController.saveReputation(req, res, req.body);
+});
+
+router.get('/buyPlan', function (req, res, next) {
+    let result;
+
+    /* PagSeguro Account */
+    let pagseguro = new PagSeguro({
+        mode: PagSeguro.MODE_SANDBOX,
+        debug: true,
+        email: 'agf_2000@hotmail.com',
+        token: '110A09A541644C75A950B8369820361B'
+    });
+
+    /* PagSeguro Settings */
+    pagseguro.currency('BRL');
+    pagseguro.reference('W1BUY');
+
+    pagseguro.redirect('http://local.riw.com.br/callback');
+    pagseguro.notify('http://local.riw.com.br/notify');
+
+    /* Products */
+    pagseguro.addItem({
+        id: req.body.id,
+        description: req.body.desc,
+        amount: req.body.amount,
+        quantity: '1'
+    });
+
+    /* Buyer info */
+    pagseguro.sender({
+        name: req.body.buyerName,
+        email: req.body.buyerEmail, // 'c02089671610138518394@sandbox.pagseguro.com.br',
+        phone: {
+            areaCode: req.body.buyerAreaCode, // '51',
+            number: req.body.buyerPhone // '12345678'
+        }
+    });
+
+    /* Shipping info */
+    pagseguro.shipping({
+        type: 1,
+        name: req.body.buyerName,
+        email: req.body.buyerEmail,
+        address: {
+            street: req.body.buyerAddress, // 'Endereço',
+            number: req.body.buyerUnitNumber,
+            city: req.body.buyerCity,
+            state: req.body.buyerRegion,
+            country: 'BRA'
+        }
+    });
+
+    /* Checkout result */
+    pagseguro.checkout(function (success, response) {
+        if (success) {
+            console.log('Checkout Success');
+            console.log(response);
+        } else {
+            console.log('Checkout Error');
+            console.error(response);
+        }
+
+        let pageToRender = '';
+        switch (req.body.id) {
+            case '1':
+                pageToRender = '';
+                break;
+            default:
+                pageToRender = '';
+                break;
+        };
+
+        res.json({
+            "checkoutCode": response
+        });
+    });
+
+    next;
 });
 
 // Posting update

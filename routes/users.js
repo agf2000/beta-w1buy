@@ -156,6 +156,7 @@ router.get('/login', function (req, res) {
 
 // Users
 // User registration proccess
+// vscode-fold=7
 router.post('/registeruser', function (req, res, next) {
 	bcrypt.genSalt(10, function (err, salt) {
 		bcrypt.hash(req.body.password, salt, function (err, hash) {
@@ -201,7 +202,7 @@ router.post('/registeruser', function (req, res, next) {
 });
 
 // Login process
-// vscode-fold=7
+// vscode-fold=8
 router.post('/login', function (req, res, next) {
 	passport.authenticate('local', function (error, user, info) {
 		if (error) {

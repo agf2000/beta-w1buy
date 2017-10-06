@@ -747,6 +747,23 @@ button.btn-yellow:hover {
 	background-color: #e59f17;
 }
 
+.btn-custom.btn-plan,
+input[type="button"].btn-plan,
+input[type="submit"].btn-plan,
+input[type="reset"].btn-plan,
+button.btn-plan {
+	text-transform: capitalize;
+	margin: 10px 0 15px 0;
+}
+
+.btn-custom.btn-plan:hover,
+input[type="button"].btn-plan:hover,
+input[type="submit"].btn-plan:hover,
+input[type="reset"].btn-plan:hover,
+button.btn-plan:hover {
+	background-color: #3b5998 !important;
+}
+
 .btn-custom.disabled,
 input[type="button"]:disabled,
 input[type="submit"]:disabled,
