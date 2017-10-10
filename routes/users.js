@@ -157,7 +157,7 @@ router.get('/meurelatorio', ensureAuthenticated, function (req, res, next) {
 			'/stylesheets/sellerreport.css'
 		],
 		script: [
-			'/javascripts/kendo/2017.1.223/kendo.all.min.js',
+			'/javascripts/kendo/2017.1.223/kendo.web.min.js',
 			'/javascripts/kendo/2017.1.223/cultures/kendo.culture.pt-BR.min.js',
 			'/javascripts/kendo/2017.1.223/messages/kendo.messages.pt-BR.min.js',
 			'/lib/select2/js/select2.min.js',
