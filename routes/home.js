@@ -127,6 +127,7 @@ router.get('/plano-comprador-brasil', ensureAuthenticated, function (req, res, n
 
 /* GET pagSeguro callback page. */
 router.get('/retorno', function (req, res, next) {
+    console.log(`params: ${req.params.transaction_id}, body: ${req.body.transaction_id}, query: ${req.query.transaction_id}`);
     res.render('plans', {
         title: 'W1Buy :: Planos via PagSeguro',
         user: req.user
