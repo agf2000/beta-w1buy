@@ -6,7 +6,7 @@ $(function () {
     my.userInfo = JSON.parse(userInfo);
 
     // Socket.io for messages count indicator    
-    let client = io.connect('https://' + window.location.host, {
+    let client = io.connect('http://' + window.location.host, {
         path: "/socket.io"
     });
     if (my.userInfo) {

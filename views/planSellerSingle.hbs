@@ -1,7 +1,10 @@
-<div class="container">
-    <div style="padding-top: 15px;">
-    </div>
+<div class="container container-fluid">
     <div class="row">
+        <div style="padding-top: 15px;" class="hidden-xs"></div>
+        <div class="hidden-xs">
+            {{>account}}
+        </div>
+        <hr>
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="col-md-12 text-center">
@@ -11,7 +14,7 @@
                         <div style="padding-bottom: 15px;">Empreendedores e Freelancers</div>
                         <img src="/images/price_one.jpg" />
                         <br />
-                        <button style="background-color: #36d9d8;" class="btn btn-plan text-center">Eu Quero</button>
+                        <button style="background-color: #36d9d8;" class="btn btn-plan text-center" data-id="5" data-amount="238.80" data-desc="w1buy-plano-vendedor">Eu Quero</button>
                         <br />
                         <div style="line-height: 18px; margin: auto; width: 250px;">
                             <p>
@@ -29,7 +32,7 @@
                         </div>
                     </div>
                     <div class="col-md-8 col-md-offset-2">
-                        <button class="btn btn-default btn-buyer" onclick="javascript:location.href = '/plano-vendedor-brasil'">Conheça o plano Brasil</button>
+                        <button class="btn btn-default btn-buyer" onclick="javascript:location.href = '/plano-comprador-brasil'">Conheça o plano Brasil</button>
                     </div>
                     <div class="col-md-2 text-right">
                         <img src="/images/ps.png" alt="Banner PagSeguro" title="Compre com pagSeguro e fique sossegado">

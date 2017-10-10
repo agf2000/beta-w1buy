@@ -14,7 +14,9 @@ const thumb = require('node-thumbnail').thumb;
 // const fileMover = require('../public/javascripts/fileMover');
 // const notifier = require('node-notifier');
 // const growl = require('growl');
-const pagSeguro = require('pagseguro-nodejs');
+// const PagSeguro = require('pagseguro-nodejs');
+const PagSeguro = require('pagseguro');
+const camaro = require('camaro');
 
 const router = express.Router();
 
@@ -225,78 +227,122 @@ router.post('/saveReputation', function (req, res) {
     peopleController.saveReputation(req, res, req.body);
 });
 
+router.get('/notify', function (req, res, next) {
+    console.log(`params: ${req.params.transaction_id}, body: ${req.body.transaction_id}, query: ${req.query.transaction_id}`);
+    res.json('ok');
+});
+
 router.get('/buyPlan', function (req, res, next) {
     let result;
 
-    /* PagSeguro Account */
-    let pagseguro = new PagSeguro({
-        mode: PagSeguro.MODE_SANDBOX,
-        debug: true,
+    /* pagSeguro Account */
+    let pagSeguro = new PagSeguro({
+        mode: 'sandbox',
         email: 'agf_2000@hotmail.com',
         token: '110A09A541644C75A950B8369820361B'
     });
 
-    /* PagSeguro Settings */
-    pagseguro.currency('BRL');
-    pagseguro.reference('W1BUY');
+    /* pagSeguro Settings */
+    pagSeguro.currency('BRL');
+    pagSeguro.reference('W1BUY');
 
-    pagseguro.redirect('http://local.riw.com.br/callback');
-    pagseguro.notify('http://local.riw.com.br/notify');
+    // pagSeguro.redirect('http://local.riw.com.br/callback');
+    // pagSeguro.notify('http://local.riw.com.br/notify');
+
+    // pagSeguro.setRedirectURL("http://local.riw.com.br/callback");
+    // pagSeguro.setNotificationURL("http://local.riw.com.br/notify");
 
     /* Products */
-    pagseguro.addItem({
-        id: req.body.id,
-        description: req.body.desc,
-        amount: req.body.amount,
+    pagSeguro.addItem({
+        id: req.query.id,
+        description: req.query.desc,
+        amount: req.query.amount,
         quantity: '1'
     });
 
     /* Buyer info */
-    pagseguro.sender({
-        name: req.body.buyerName,
-        email: req.body.buyerEmail, // 'c02089671610138518394@sandbox.pagseguro.com.br',
-        phone: {
-            areaCode: req.body.buyerAreaCode, // '51',
-            number: req.body.buyerPhone // '12345678'
-        }
+    pagSeguro.buyer({
+        name: req.query.buyerName,
+        email: 'w1buy@sandbox.pagSeguro.com.br', // req.query.buyerEmail,
+        // phone: {
+        //     areaCode: req.query.buyerAreacode, // '51',
+        //     number: req.query.buyerPhone // '12345678'
+        // }
+        phoneAreaCode: req.query.buyerAreacode,
+        phoneNumber: req.query.buyerPhone
     });
 
     /* Shipping info */
-    pagseguro.shipping({
+    pagSeguro.shipping({
         type: 1,
-        name: req.body.buyerName,
-        email: req.body.buyerEmail,
-        address: {
-            street: req.body.buyerAddress, // 'Endereço',
-            number: req.body.buyerUnitNumber,
-            city: req.body.buyerCity,
-            state: req.body.buyerRegion,
-            country: 'BRA'
-        }
+        name: req.query.buyerName,
+        email: 'w1buy@sandbox.pagSeguro.com.br', // req.query.buyerEmail,
+        street: req.query.buyerStreet,
+        number: req.query.buyerStreetNumber,
+        complement: '',
+        district: req.query.buyerAddressDistrict,
+        postalCode: req.query.buyerAddressPostalCode,
+        city: req.query.buyerCity,
+        state: req.query.buyerRegion,
+        country: 'BRA'
+        // address: {
+        //     street: req.query.buyerAddress, // 'Endereço',
+        //     number: req.query.buyerUnitNumber,
+        //     city: req.query.buyerCity,
+        //     state: req.query.buyerRegion,
+        //     country: 'BRA'
+        // }
     });
 
     /* Checkout result */
-    pagseguro.checkout(function (success, response) {
-        if (success) {
-            console.log('Checkout Success');
-            console.log(response);
+    // pagSeguro.checkout(function (success, response) {
+    //     if (success) {
+    //         console.log('Checkout Success');
+    //         console.log(response);
+
+    //         let url = '';
+    //         if (pagSeguro.mode === 'sandbox') {
+    //             url = 'https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code='
+    //         } else {
+    //             url = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code='
+    //         }
+
+    //         const template = {
+    //             data: '//code'
+    //         }
+
+    //         res.json({
+    //             "url": url + camaro(response, template).data
+    //         });
+    //     } else {
+    //         console.log('Checkout Error');
+    //         console.error(response);
+
+    //         res.json({
+    //             "error": response
+    //         });
+    //     }
+    // });
+
+    pagSeguro.send(function (err, response) {
+        if (err) {
+            console.log(err);
+        }
+        console.log(response);
+
+        let url = '';
+        if (pagSeguro.mode === 'sandbox') {
+            url = 'https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code='
         } else {
-            console.log('Checkout Error');
-            console.error(response);
+            url = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code='
         }
 
-        let pageToRender = '';
-        switch (req.body.id) {
-            case '1':
-                pageToRender = '';
-                break;
-            default:
-                pageToRender = '';
-                break;
-        };
+        const template = {
+            data: '//code'
+        }
 
         res.json({
-            "checkoutCode": response
+            "url": url + camaro(response, template).data
         });
     });
 

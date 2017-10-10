@@ -8,7 +8,10 @@
         <!-- Simple post content example. -->
         <div class="panel panel-default">
             <div class="panel-body">
-                <h2>Cadastro <small class="pull-right"><span class="required">*</span> Campos mandatórios</small></h2>
+                <h2>Cadastro
+                    <small class="pull-right">
+                        <span class="required">*</span> Campos mandatórios</small>
+                </h2>
 
                 <div class="row">
                     <form class="form-horizontal" data-toggle="validator" id="profileForm" name="profileForm" role="form">
@@ -40,7 +43,9 @@
                             </div>
 
                             <div class="form-group hidden">
-                                <label class="col-sm-2 control-label" for="select2Countries">País: <span class="required">*</span></label>
+                                <label class="col-sm-2 control-label" for="select2Countries">País:
+                                    <span class="required">*</span>
+                                </label>
 
                                 <div class="col-sm-10">
                                     <select data-placeholder="Escolha o País" id="select2Countries" required style="width: 100%;" title="País">
@@ -62,21 +67,27 @@
                                         <input id="txtBoxPostalCode" type="text" class="form-control" title="CEP" placeholder="CEP" required value="{{user.PostalCode}}"
                                             tabindex="5">
                                         <span class="input-group-btn">
-                                            <button id="btnPostalCode" class="btn btn-default" type="button"><i class="glyphicon glyphicon-globe"></i></button>
+                                            <button id="btnPostalCode" class="btn btn-default" type="button">
+                                                <i class="glyphicon glyphicon-globe"></i>
+                                            </button>
                                         </span>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="select2Regions">Estado: <span class="required">*</span></label>
+                                <label class="col-sm-2 control-label" for="select2Regions">Estado:
+                                    <span class="required">*</span>
+                                </label>
                                 <div class="col-sm-3">
                                     <select data-placeholder="Escolha o Estado" id="select2Regions" style="width: 100%;" required title="Estado" tabindex="6">
                                         <option></option>
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 control-label" for="select2Cities">Cidade: <span class="required">*</span></label>
+                                <label class="col-sm-2 control-label" for="select2Cities">Cidade:
+                                    <span class="required">*</span>
+                                </label>
                                 <div class="col-sm-5">
                                     <select data-placeholder="Escolha a Cidade" id="select2Cities" style="width: 100%;" required title="Cidade" tabindex="7">
                                         <option></option>
@@ -120,8 +131,12 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-12">
-                                <button class="btn btn-primary pull-right" id="btnUpdateUser" tabindex="12">Atualizar</button>
+                            <div class="col-sm-10">
+                                <span class="right small">É aconselhado preencher todos campos para pagamentos via PagSeguro.</span>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary right" id="btnUpdateUser" tabindex="12">
+                                    Atualizar</button>
                             </div>
                         </div>
                     </form>
