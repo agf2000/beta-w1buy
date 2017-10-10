@@ -367,6 +367,39 @@ router.get('/transactions', function (req, res, next) {
     next();
 });
 
+// Seller report plans
+router.get('/getSellerReportPlans', ensureAuthenticated, function (req, res) {
+    peopleController.getSellerReportPlans(req, res, req.query.userId, function (records) {
+        if (!records.error) {
+            res.json(records);
+        }
+    });
+});
+
+// Seller report plan
+router.get('/getSellerReportPlan', ensureAuthenticated, function (req, res) {
+    peopleController.getSellerReportPlan(req, res, req.query.planId, function (records) {
+        if (!records.error) {
+            res.json(records);
+        }
+    });
+});
+
+// Add seller report plan
+router.post('/addSellerReportPlan', ensureAuthenticated, function (req, res) {
+    peopleController.addSellerReportPlan(req, res, req.body);
+});
+
+// Save seller report plan
+router.put('/updateSellerReportPlan', ensureAuthenticated, function (req, res) {
+    peopleController.updateSellerReportPlan(req, res, req.body);
+});
+
+// Remove seller report plan
+router.put('/removeSellerReportPlan', ensureAuthenticated, function (req, res) {
+    peopleController.removeSellerReportPlan(req, res, req.query.planId);
+});
+
 // Posting update
 // router.put('/updatePosting', ensureAuthenticated, multer({
 //     destination: (req, file, callback) => {

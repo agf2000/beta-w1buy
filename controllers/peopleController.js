@@ -1,5 +1,6 @@
 const db = require("../core/db");
 const util = require("util");
+const _ = require('lodash');
 
 // Adds person
 // vscode-fold=1
@@ -369,7 +370,7 @@ exports.getAddress = function (req, res, postalCode) {
     }
 };
 
-// Sabes person rating
+// Saves person rating
 // vscode-fold=7
 exports.saveReputation = function (req, res, reqBody) {
     try {
@@ -489,5 +490,227 @@ exports.getPeopleLocales = function (req, res, year, cb) {
         cb({
             'error': ex.message
         });
+    };
+};
+
+// Gets seller report plans
+// vscode-fold=11
+exports.getSellerReportPlans = function (req, res, userId, cb) {
+    try {
+        let sqlInst = 'select p.* ';
+        sqlInst += ', (select count(*) from w1Buy_seller_locales where sellerreportplanid = p.[sellerreportplanid]) as SellerLocalesCount ';
+        sqlInst += ', (select count(*) from w1Buy_seller_keywords where sellerreportplanid = p.[sellerreportplanid]) as SellerKeywordsCount ';
+        sqlInst += `from w1buy_seller_report_plans p where p.[userid] = ${userId};`;
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                cb({
+                    'error': err.message
+                });
+            } else {
+                cb(data.recordsets[0]);
+            }
+        });
+    } catch (ex) {
+        cb({
+            'error': ex.message
+        });
+    };
+};
+
+// Gets seller report plan
+// vscode-fold=12
+exports.getSellerReportPlan = function (req, res, planId, cb) {
+    try {
+        let sqlInst = `select * from w1buy_seller_report_plans where sellerreportplanid = ${planId}; `;
+
+        sqlInst += `select * from w1Buy_seller_locales where sellerreportplanid = ${planId}; `;
+
+        sqlInst += `select * from w1Buy_seller_keywords where sellerreportplanid = ${planId};`;
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                cb({
+                    'error': err.message
+                });
+            } else {
+                if (data.recordsets[0].length) {
+                    if (data.recordsets[1].length) {
+                        data.recordsets[0][0].Locales = data.recordsets[1];
+                    }
+
+                    if (data.recordsets[2].length) {
+                        data.recordsets[0][0].Keywords = data.recordsets[2];
+                    }
+                }
+
+                cb(data.recordsets[0]);
+            }
+        }, true);
+    } catch (ex) {
+        cb({
+            'error': ex.message
+        });
+    };
+};
+
+// Gets seller report plan locales
+// vscode-fold=13
+exports.getSellerReportPlanLocales = function (req, res, planId, cb) {
+    try {
+        let sqlInst = `select * from w1Buy_seller_locales where sellerreportplanid = ${planId};`;
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                cb({
+                    'error': err.message
+                });
+            } else {
+                cb(data.recordsets[0]);
+            }
+        });
+    } catch (ex) {
+        cb({
+            'error': ex.message
+        });
+    };
+};
+
+// Gets seller report plan keywords
+// vscode-fold=14
+exports.getSellerReportPlanKeywords = function (req, res, planId, cb) {
+    try {
+        let sqlInst = `select * from w1Buy_seller_keywords where sellerreportplanid = ${planId};`;
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                cb({
+                    'error': err.message
+                });
+            } else {
+                cb(data.recordsets[0]);
+            }
+        });
+    } catch (ex) {
+        cb({
+            'error': ex.message
+        });
+    };
+};
+
+// Add seller report plan
+// vscode-fold=15
+exports.addSellerReportPlan = function (req, res, reqBody) {
+    try {
+        if (!reqBody) throw new Error("Input not valid");
+        let data = reqBody;
+        if (data) {
+            let sqlInst = "declare @id int; "
+            sqlInst += "insert into w1buy_seller_report_plans (userid, createdondate)";
+            sqlInst += util.format(" values (%d, getdate()); set @id = scope_identity(); ",
+                data.UserId);
+
+            _.forEach(data.SellerKeywords, function (word) {
+                sqlInst += util.format("insert into w1Buy_seller_keywords (sellerreportplanid, keywordname, createdondate) values (@id, '%s', getdate()); ", word.KeywordName);
+            });
+
+            _.forEach(data.SellerLocales, function (locale) {
+                sqlInst += util.format("insert into w1Buy_seller_locales (localeid, city, region, sellerreportplanid, createdondate) " +
+                    "values (%d, '%s', '%s', @id, getdate()); ",
+                    locale.LocaleId, locale.City, locale.Region);
+            });
+
+            sqlInst += "select @id as SellerReportPlanId;";
+
+            db.querySql(sqlInst, function (records, err) {
+                if (err) {
+                    console.log(err.message);
+                    res.status(500).json({
+                        error: err.message
+                    });
+                } else {
+                    res.json(records.recordset[0])
+                }
+            }, true);
+        } else {
+            // throw new Error("Input not valid");
+            return res.status(500).json(`Input not valid (status: 500)`);
+        }
+    } catch (ex) {
+        res.send(ex);
+    };
+};
+
+// Update seller report plan
+// vscode-fold=16
+exports.updateSellerReportPlan = function (req, res, reqBody) {
+    try {
+        if (!reqBody) throw new Error("Input not valid");
+        let data = reqBody;
+        if (data) {
+            let sqlInst = `delete from w1Buy_seller_keywords where sellerreportplanid = ${data.SellerReportPlanId}; `;
+
+            _.forEach(data.SellerKeywords, function (word) {
+                sqlInst += util.format("insert into w1Buy_seller_keywords (sellerreportplanid, keywordname, createdondate) values (%d, '%s', getdate()); ", data.SellerReportPlanId, word.KeywordName);
+            });
+
+            sqlInst += `delete from w1Buy_seller_locales where sellerreportplanid = ${data.SellerReportPlanId}; `;
+
+            _.forEach(data.SellerLocales, function (locale) {
+                sqlInst += util.format("insert into w1Buy_seller_locales (localeid, city, region, sellerreportplanid, createdondate) " +
+                    "values (%d, '%s', '%s', %d, getdate()); ",
+                    locale.LocaleId, locale.City, locale.Region, data.SellerReportPlanId);
+            });
+
+            db.querySql(sqlInst, function (records, err) {
+                if (err) {
+                    console.log(err.message);
+                    res.status(500).json({
+                        error: err.message
+                    });
+                } else {
+                    res.json({
+                        'result': 'success'
+                    })
+                }
+            }, true);
+        } else {
+            // throw new Error("Input not valid");
+            return res.status(500).json(`Input not valid (status: 500)`);
+        }
+    } catch (ex) {
+        res.send(ex);
+    };
+};
+
+// Remove seller report plan
+// vscode-fold=17
+exports.removeSellerReportPlan = function (req, res, planId) {
+    try {
+        if (planId) {
+            let sqlInst = `delete from w1buy_seller_report_plans where sellerreportplanid = ${planId}; `;
+
+            db.querySql(sqlInst, function (records, err) {
+                if (err) {
+                    console.log(err.message);
+                    res.status(500).json({
+                        error: err.message
+                    });
+                } else {
+                    res.json({
+                        'result': 'success'
+                    })
+                }
+            }, true);
+        } else {
+            // throw new Error("Input not valid");
+            return res.status(500).json(`Input not valid (status: 500)`);
+        }
+    } catch (ex) {
+        res.send(ex);
     };
 };

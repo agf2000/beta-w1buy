@@ -747,23 +747,6 @@ button.btn-yellow:hover {
 	background-color: #e59f17;
 }
 
-.btn-custom.btn-plan,
-input[type="button"].btn-plan,
-input[type="submit"].btn-plan,
-input[type="reset"].btn-plan,
-button.btn-plan {
-	text-transform: capitalize;
-	margin: 10px 0 15px 0;
-}
-
-.btn-custom.btn-plan:hover,
-input[type="button"].btn-plan:hover,
-input[type="submit"].btn-plan:hover,
-input[type="reset"].btn-plan:hover,
-button.btn-plan:hover {
-	background-color: #3b5998 !important;
-}
-
 .btn-custom.disabled,
 input[type="button"]:disabled,
 input[type="submit"]:disabled,
@@ -3794,4 +3777,22 @@ a.btn-primary {
 #icon-lost-msg.error,
 #icon-register-msg.error {
 	background-color: #eb575b !important;
+}
+
+.k-grid tbody .k-button,
+.k-ie8 .k-grid tbody button.k-button {
+	min-width: 0 !important;
+}
+
+.k-grid tbody .k-button {
+	min-width: 12px;
+	width: 27px;
+	height: 27px;
+	overflow: hidden;
+}
+
+.k-grid tbody .k-button span.fa-remove {
+	color: #fff !important;
+	display: block;
+	padding-top: 2px !important;
 }
