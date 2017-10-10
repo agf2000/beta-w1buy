@@ -29,21 +29,21 @@ $(function () {
                         case 1:
                             $('#iStars i').eq(0).tooltip('hide').attr({
                                 'data-original-title': 'Esta conta tem um plano Bronze Vendedor. Clique aqui para configurar seu relatório.',
-                                'onclick': 'window.location = "/meuRelatorio"',
+                                'onclick': 'window.location = "/meurelatorio"',
                                 'class': 'glyphicon glyphicon-star accountStar bronze'
                             });
                             break;
                         case 2:
                             $('#iStars i').eq(0).tooltip('hide').attr({
                                 'data-original-title': 'Esta conta tem um plano Prata Vendedor. Clique aqui para configurar seu relatório.',
-                                'onclick': 'window.location = "/meuRelatorio"',
+                                'onclick': 'window.location = "/meurelatorio"',
                                 'class': 'glyphicon glyphicon-star accountStar silver'
                             });
                             break;
                         case 3:
                             $('#iStars i').eq(0).tooltip('hide').attr({
                                 'data-original-title': 'Esta conta tem um plano Ouro Vendedor. Clique aqui para configurar seu relatório.',
-                                'onclick': 'window.location = "/meuRelatorio"',
+                                'onclick': 'window.location = "/meurelatorio"',
                                 'class': 'glyphicon glyphicon-star accountStar gold'
                             });
                             break;
@@ -103,8 +103,53 @@ $(function () {
     $('a[href="' + window.location.pathname + '"]').addClass('active');
 
     if (window.location.pathname !== '/contas/minhaconta') {
-        $('a[href="/anuncios"]').removeClass('hidden');
-        $('a[href="/anuncios/novo"]').removeClass('hidden');
+        if (my.userInfo.Roles != undefined) {
+            var match = my.userInfo.Roles.find(function (item) {
+                let result = false;
+                if (item.rolename == 'Administrators') {
+                    result = true;
+                };
+                return result;
+            });
+
+            if (match) {
+                $('a[href="/admin"]').removeClass('hidden');
+                $('a[href="/admin/anuncios"]').removeClass('hidden');
+                $('a[href="/admin/usuarios"]').removeClass('hidden');
+            } else {
+                $('a[href="/anuncios"]').removeClass('hidden');
+                $('a[href="/anuncios/novo"]').removeClass('hidden');
+            }
+        }
+    } else {
+        if (my.userInfo.Roles != undefined) {
+            var match = my.userInfo.Roles.find(function (item) {
+                let result = false;
+                if (item.rolename == 'Administrators') {
+                    result = true;
+                };
+                return result;
+            });
+
+            if (match) {
+                $('a[href="/admin"]').removeClass('hidden');
+                $('a[href="/admin/anuncios"]').removeClass('hidden');
+                $('a[href="/admin/usuarios"]').removeClass('hidden');
+
+                if (!$('a[href="/contas/meusanuncios"]').hasClass('hidden')) {
+                    $('a[href="/contas/meusanuncios"]').addClass('hidden');
+                }
+
+                if (!$('a[href="/contas/mensagens"]').hasClass('hidden')) {
+                    $('a[href="/contas/mensagens"]').addClass('hidden');
+                }
+
+                if (!$('#usersHome').hasClass('hidden')) {
+                    $('#usersHome').addClass('hidden');
+                }
+
+            }
+        }
     }
 
     my.sendNotification = function (image, title, message, timeout, showOnFocus) {

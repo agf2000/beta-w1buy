@@ -57,6 +57,8 @@ module.exports = function (passport) {
         sqlInst += `select count(u.district) + count(u.firstname) + count(u.lastname) + count(u.docid) + count(u.cell) + count(u.cityid) + count(u.streetnumber) + 
                     count(u.postalcode) + count(u.regionid) + count(u.street) + count(u.streetnumber) + count(u.telephone) as progress from users u where userid = ${id}; `;
 
+        sqlInst += `select r.rolename from roles r join userroles ur on r.roleid = ur.roleid where ur.userid = ${id}; `;
+
         sqlInst += "drop table #temp; ";
 
         db.querySql(sqlInst, (user, err) => {
@@ -65,6 +67,9 @@ module.exports = function (passport) {
             }
             if (user.recordsets[2]) {
                 user.recordset[0].Progress = Math.round((user.recordsets[2][0].progress * 100) / 12).toFixed(0);
+            }
+            if (user.recordsets[3]) {
+                user.recordset[0].Roles = user.recordsets[3];
             }
             done(err, user.recordset[0]);
         }, true);

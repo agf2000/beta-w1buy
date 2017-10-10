@@ -240,8 +240,48 @@ exports.getPostings = function (req, res, portalId, term, localeId, pageIndex, p
     }
 };
 
-// Gets user posts
+// Gets all postings
 // vscode-fold=6
+exports.getPosts = function (req, res, portalId, cb) {
+    try {
+        let sqlInst = "";
+
+        sqlInst += "select p.* ";
+        // sqlInst += ", (select isnull(priorityvalueamount, 0) from w1buy_postingmessages where conversationid = p.postingid ) as PriorityValueAmount";
+        // sqlInst += ", (select isnull(prioritydeliveryamount, 0) from w1buy_postingmessages where conversationid = p.postingid ) as PriorityDeliveryAmount";
+        sqlInst += ", (case isnull(p.condition, '0') when '1' then 'NOVO' when '2' then 'USADO' else 'NOVO ou USADO' end) as PostingCondition";
+        sqlInst += ", p.[userid], p.[expirydate], p.[quantity], u.[displayname] as PosterDisplayName";
+        sqlInst += ", (select value from lists where entryid = (select regionid from users where userid = p.userid)) as PosterRegion ";
+        sqlInst += ", (select value from lists where entryid = (select cityid from users where userid = p.userid)) as PosterCity ";
+        sqlInst += ", isnull((select 1 from w1buy_user_account where accounttype = 'buyer' and userid = p.userid and accountlevel in (2, 3)), 0) as Premium";
+        sqlInst += ", isnull((select dbo.w1buy_get_accountlevel(accountlevel) from w1buy_user_account where accounttype = 'buyer' and userid = p.userid), '') as AccountLevel";
+        sqlInst += ", isnull((select top 1 1 from w1buy_postingmessages pm where pm.postingid = p.postingid ), 0) as Locked";
+        sqlInst += `, ('[' + (select( + '{"LocaleId":"' + cast(l.localeid as nvarchar(max)) + '","City":"' + l.city + ' (' + l.region + ')' + '","Quantity":"' + cast(l.quantity as nvarchar(max)) + '"},') as [text()] from w1buy_postinglocales l where l.postingid = p.[postingid] for xml path('')) + ']') as Locales`;
+        sqlInst += `, ('[' + (select( + '{"FileName":"' + f.filename + '"},') as [text()] from w1buy_postingfiles f where f.conversationid = p.[postingid] for xml path('')) + ']') as Files `;
+        sqlInst += ", ('/anuncios/' + cast(p.PostingId as varchar(10)) + '/' + cast(p.UserId as varchar(10))) as Link ";
+        sqlInst += "from w1buy_postings p ";
+        sqlInst += "join users u on p.userid = u.userid ";
+        sqlInst += "where p.portalid = " + portalId + ";";
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                cb({
+                    'error': err.message
+                });
+            } else {
+                cb(data.recordsets[0]);
+            }
+        });
+    } catch (ex) {
+        cb({
+            'error': ex.message
+        });
+    };
+};
+
+// Gets user posts
+// vscode-fold=7
 exports.getUserPostings = function (req, res, userId) {
     try {
         if (userId) {
@@ -301,7 +341,7 @@ exports.removePosting = function (req, res, postingId) {
 }
 
 // Gets posts locales count
-// vscode-fold=7
+// vscode-fold=8
 exports.getPostingsLocalesCount = function (req, res, portalId, term) {
     try {
         let sqlInst = "";
@@ -333,7 +373,7 @@ exports.getPostingsLocalesCount = function (req, res, portalId, term) {
 };
 
 // Gets post
-// vscode-fold=8
+// vscode-fold=9
 exports.getPost = function (req, res, postId, userId, cb) {
     try {
         let sqlInst = "";
@@ -426,4 +466,50 @@ exports.getPost = function (req, res, postId, userId, cb) {
     } catch (ex) {
         res.json(ex.message);
     }
+};
+
+// Gets postings dates statistics
+// vscode-fold=10
+exports.getPostingsDate = function (req, res, year, cb) {
+    try {
+        let sqlInst = `set language brazilian; select convert(char(3), datename(month, createdondate), 0) as months, count(*) as quantity from w1buy_postings where year(createdondate) = ${year} group by convert(char(3), datename(month, createdondate), 0);`;
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                cb({
+                    'error': err.message
+                });
+            } else {
+                cb(data.recordsets[0]);
+            }
+        });
+    } catch (ex) {
+        cb({
+            'error': ex.message
+        });
+    };
+};
+
+// Gets postings locales statistics
+// vscode-fold=11
+exports.getPostingsLocales = function (req, res, year, cb) {
+    try {
+        let sqlInst = `select l.value as region, count(*) as quantity from w1buy_postings p join users u on p.userid = u.userid join lists l on isnull(u.regionid, 1111) = l.entryid where year(p.createdondate) = ${year} group by regionid, p.userid, l.value;`;
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                cb({
+                    'error': err.message
+                });
+            } else {
+                cb(data.recordsets[0]);
+            }
+        });
+    } catch (ex) {
+        cb({
+            'error': ex.message
+        });
+    };
 };

@@ -1,7 +1,8 @@
 <div class="panel panel-default">
     <div class="panel-body">
         <h1 class="panel-title pull-left" style="font-size:30px;">
-            {{user.DisplayName}} (ID: {{user.UserID}})<br />
+            {{user.DisplayName}} (ID: {{user.UserID}})
+            <br />
             <small>{{user.Email}}</small>
         </h1>
         <div class="pull-right"> Perfil Progresso
@@ -16,7 +17,7 @@
         <hr>
         <div class="accountBtn pull-left text-center">
             <a href="/contas/cadastro" class="btn btn-default margin-bottom10-xs">
-                Meu Cadastro 
+                Meu Cadastro
             </a>
             <a href="/anuncios/novo" class="btn btn-default margin-bottom10-xs hidden">
                 Anunciar o que desejo
@@ -29,6 +30,15 @@
             </a>
             <a href="/contas/mensagens" class="btn btn-default margin-bottom10-xs">
                 Mensagens
+            </a>
+            <a href="/admin" class="btn btn-default hidden">
+                Admin
+            </a>
+            <a href="/admin/anuncios" class="btn btn-default hidden">
+                Anúncios
+            </a>
+            <a href="/admin/usuarios" class="btn btn-default hidden">
+                Usuários
             </a>
         </div>
         <div id="users">

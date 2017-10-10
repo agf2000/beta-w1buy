@@ -76,6 +76,10 @@ app.use('/', home);
 // 	res.sendFile(path.join(__dirname + '/index.html'));
 // });
 
+// Admin route
+let admin = require('./routes/admin');
+app.use('/admin', admin);
+
 // Users route
 let users = require('./routes/users');
 app.use('/contas', users);

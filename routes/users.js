@@ -139,8 +139,44 @@ router.get('/mensagens', ensureAuthenticated, function (req, res) {
 	});
 });
 
-// Login Form
+// User's seller report
 // vscode-fold=6
+router.get('/meurelatorio', ensureAuthenticated, function (req, res, next) {
+	res.render('sellerReport', {
+		title: 'W1buy :: Relatório',
+		user: req.user,
+		css: [
+			'/stylesheets/kendo/2017.1.223/kendo.common.min.css',
+			'/stylesheets/kendo/2017.1.223/kendo.flat.min.css',
+			'/lib/sweetalert2/css/sweetalert2.min.css',
+			'/lib/pnotify/css/pnotify.css',
+			'/lib/pnotify/css/pnotify.buttons.css',
+			'/lib/select2/css/select2.min.css',
+			'/lib/select2-bootstrap-theme/css/select2-bootstrap.min.css',
+			'/lib/bootstrap-tagsinput/css/bootstrap-tagsinput.css',
+			'/stylesheets/sellerreport.css'
+		],
+		script: [
+			'/javascripts/kendo/2017.1.223/kendo.all.min.js',
+			'/javascripts/kendo/2017.1.223/cultures/kendo.culture.pt-BR.min.js',
+			'/javascripts/kendo/2017.1.223/messages/kendo.messages.pt-BR.min.js',
+			'/lib/select2/js/select2.min.js',
+			'/lib/select2/i18n/pt-BR.js',
+			'/lib/pnotify/js/pnotify.js',
+			'/lib/pnotify/js/pnotify.buttons.js',
+			'/lib/pnotify/js/pnotify.callbacks.js',
+			'/lib/pnotify/js/pnotify.confirm.js',
+			'/lib/pnotify/js/pnotify.mobile.js',
+			'/lib/bootstrap-tagsinput/js/bootstrap-tagsinput.min.js',
+			'/javascripts/utilities.js',
+			'/javascripts/account.js',
+			'/javascripts/sellerreport.js'
+		]
+	});
+});
+
+// Login Form
+// vscode-fold=7
 router.get('/login', function (req, res) {
 	res.render('login', {
 		title: 'W1Buy :: Login',
@@ -156,7 +192,7 @@ router.get('/login', function (req, res) {
 
 // Users
 // User registration proccess
-// vscode-fold=7
+// vscode-fold=8
 router.post('/registeruser', function (req, res, next) {
 	bcrypt.genSalt(10, function (err, salt) {
 		bcrypt.hash(req.body.password, salt, function (err, hash) {
@@ -202,7 +238,7 @@ router.post('/registeruser', function (req, res, next) {
 });
 
 // Login process
-// vscode-fold=8
+// vscode-fold=9
 router.post('/login', function (req, res, next) {
 	passport.authenticate('local', function (error, user, info) {
 		if (error) {
@@ -242,6 +278,7 @@ router.post('/login', function (req, res, next) {
 });
 
 // Send user passoword process
+// vscode-fold=10
 router.get('/reset/:token', function (req, res) {
 	let sqlInst = `select * from users where passwordresettoken = '${req.params.token}' and passwordresetexpiration <= '${(new Date().toISOString().slice(0, 19).replace('T', ' '))}'`;
 	db.querySql(sqlInst, (data, err) => {
@@ -413,7 +450,7 @@ router.post('/resetpassword', function (req, res, next) {
 });
 
 // logout
-// vscode-fold=8
+// vscode-fold=11
 router.get('/logout', function (req, res) {
 	req.logout();
 	res.redirect('/');

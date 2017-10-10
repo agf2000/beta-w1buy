@@ -411,3 +411,83 @@ exports.saveReputation = function (req, res, reqBody) {
         res.send(ex);
     };
 };
+
+// Gets list of users
+// vscode-fold=8
+exports.getPeople = function (req, res, portalId, cb) {
+    try {
+        let sqlInst = "select p.Approved, p.CityId, p.CountryId, p.CreatedOnDate, p.DisplayName, p.DocId, p.Email, p.FirstChoice ";
+        sqlInst += ", p.FirstName, p.IsDeleted, p.IsSuperUser, p.LastIPAddress, p.LastModifiedByUserID, p.LastModifiedOnDate, p.LastName";
+        sqlInst += ", p.LastPasswordChangeDate, p.PortalId, p.PostalCode, p.RegionId, p.UserID, p.Username";
+        sqlInst += ", isnull(street, '') as Street ";
+        sqlInst += ", isnull(district, '') as District ";
+        sqlInst += ", isnull(streetnumber, '') as StreetNumber ";
+        sqlInst += ", isnull(telephone, '') as Telephone ";
+        sqlInst += ", isnull(cell, '') as Cell ";
+        sqlInst += ", Region = (select [value] from lists where entryid = (select regionid from users where userid = p.userid))";
+        sqlInst += ", City = (select [text] from lists where entryid = (select cityid from users where userid = p.userid))";
+        sqlInst += "from users p ";
+        sqlInst += "where p.portalid = " + portalId + ";";
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                cb({
+                    'error': err.message
+                });
+            } else {
+                cb(data.recordsets[0]);
+            }
+        });
+    } catch (ex) {
+        cb({
+            'error': ex.message
+        });
+    };
+};
+
+// Gets people statistics
+// vscode-fold=9
+exports.getPeopleDate = function (req, res, year, cb) {
+    try {
+        let sqlInst = `set language brazilian; select convert(char(3), datename(month, createdondate), 0) as months, count(*) as quantity from users where year(createdondate) = ${year} group by convert(char(3), datename(month, createdondate), 0);`;
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                cb({
+                    'error': err.message
+                });
+            } else {
+                cb(data.recordsets[0]);
+            }
+        });
+    } catch (ex) {
+        cb({
+            'error': ex.message
+        });
+    };
+};
+
+// Gets people locales statistics
+// vscode-fold=10
+exports.getPeopleLocales = function (req, res, year, cb) {
+    try {
+        let sqlInst = `select l.value as region, count(*) as quantity from users p join lists l on isnull(l.entryid, 1111) = p.regionid where year(p.createdondate) = ${year} group by p.regionid, l.value;`;
+
+        db.querySql(sqlInst, function (data, err) {
+            if (err) {
+                console.log(err.message);
+                cb({
+                    'error': err.message
+                });
+            } else {
+                cb(data.recordsets[0]);
+            }
+        });
+    } catch (ex) {
+        cb({
+            'error': ex.message
+        });
+    };
+};

@@ -85,13 +85,15 @@
                 </div>
 
                 <ul class="nav navbar-nav">
-                    <li class="active hidden-xs" style="font-size: 16px; font-style: italic;"><a name="slogan">Conectando Pessoas e Negocios!!</a></li>
+                    <li class="active hidden-xs" style="font-size: 16px; font-style: italic;">
+                        <a name="slogan">Conectando Pessoas e Negocios!!</a>
+                    </li>
                     {{#if user}}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							{{user.DisplayName}}
-							<b class="caret"></b>
-						</a>
+                            {{user.DisplayName}}
+                            <b class="caret"></b>
+                        </a>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li>
                                 <div class="navbar-content">
@@ -118,7 +120,8 @@
                                                 </a>
                                             </div>
                                             <div class="col-xs-6">
-                                                <a href="/contas/logout" class="btn btn-default btn-sm pull-right"><i class="fa fa-power-off" aria-hidden="true"></i> Sair</a>
+                                                <a href="/contas/logout" class="btn btn-default btn-sm pull-right">
+                                                    <i class="fa fa-power-off" aria-hidden="true"></i> Sair</a>
                                             </div>
                                         </div>
                                     </div>
@@ -197,8 +200,7 @@
     <script type="text/javascript" src="/lib/slider-pro/js/jquery.sliderPro.min.js"></script>
     <script type="text/javascript" src="/lib/fancybox/js/jquery.fancybox.pack.js"></script>
     <script type="text/javascript" src="/lib/fancybox/helpers/js/jquery.fancybox-media.js"></script>
-    <script type="text/javascript" src="/javascripts/parallax.min.js"></script>
-    {{!--
+    <script type="text/javascript" src="/javascripts/parallax.min.js"></script> {{!--
     <script type="text/javascript" src="/lib/jquery.counterup/js/jquery.counterup.min.js"></script> --}}
     <script type="text/javascript" src="/lib/isotope-layout/js/isotope.pkgd.min.js"></script>
     <script type="text/javascript" src="/javascripts/script.js"></script>
@@ -208,9 +210,7 @@
     <script type="text/javascript" src="/javascripts/kendo/2017.1.223/cultures/kendo.culture.pt-BR.min.js"></script>
     <script type="text/javascript" src="/javascripts/kendo/2017.1.223/messages/kendo.messages.pt-BR.min.js"></script>
     <!-- Socket.IO -->
-    <script src="/socket.io/socket.io.js"></script>
-
-    {{#each script}}
+    <script src="/socket.io/socket.io.js"></script> {{#each script}}
     <!-- dynamic script -->
     <script src="{{this}}"></script>
     <!-- /dynamic script -->

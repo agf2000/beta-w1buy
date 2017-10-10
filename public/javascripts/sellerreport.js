@@ -11,7 +11,7 @@ $(function () {
     $.each(my.userInfo.AccountsInfo, function (idx, account) {
         if (account.AccountType == "seller") {
 
-            $('a[href="meuRelatorio"]').parent().removeClass('hidden');
+            $('a[href="meurelatorio"]').parent().removeClass('hidden');
 
             my.localesLimit = 0;
             my.tagsLimit = 0;
