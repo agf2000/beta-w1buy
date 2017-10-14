@@ -156,7 +156,7 @@ $(function () {
                         msgTitle = 'Anúncio atualizado com sucesso!';
                     }
 
-                    if ($('.getPlans').hasClass('hidden')) {
+                    if ($('#btnGetPlans').hasClass('hidden')) {
                         BootstrapDialog.show({
                             title: msgTitle,
                             type: BootstrapDialog.TYPE_SUCCESS,
@@ -176,9 +176,9 @@ $(function () {
                             message: '',
                             buttons: [{
                                 label: 'Anúncie de maneira especial',
-                                cssClass: 'btn btn-orange pull-left getPlans',
+                                cssClass: 'btn btn-orange pull-left',
                                 action: function () {
-                                    window.location.href = '/planos'
+                                    window.location.href = '/planos-comprador'
                                 }
                                 // }, {
                                 //     label: 'Ver Meus Anúncios',
@@ -309,8 +309,8 @@ $(function () {
                             'title': 'Quantidade por Local'
                         });
                     }
-                    if (!$('.getPlans').hasClass('hidden')) {
-                        $('.getPlans').addClass('hidden');
+                    if (!$('#btnGetPlans').hasClass('hidden')) {
+                        $('#btnGetPlans').addClass('hidden');
                     }
                 }
             });
@@ -338,6 +338,15 @@ $(function () {
             'title': 'Quantidade'
         });
     }
+
+    $('#btnGetPlans').click(function (e) {
+        if (e.clientX === 0) {
+            return false;
+        }
+        e.preventDefault();
+
+        window.location.href = '/planos-comprador';
+    });
 
     let postInfo;
     if (postingData) {

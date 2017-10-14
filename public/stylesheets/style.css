@@ -747,6 +747,22 @@ button.btn-yellow:hover {
 	background-color: #e59f17;
 }
 
+.btn-custom.btn-plan,
+input[type="button"].btn-plan,
+input[type="submit"].btn-plan,
+input[type="reset"].btn-plan,
+button.btn-plan {
+	text-transform: capitalize;
+}
+
+.btn-custom.btn-plan:hover,
+input[type="button"].btn-plan:hover,
+input[type="submit"].btn-plan:hover,
+input[type="reset"].btn-plan:hover,
+button.btn-plan:hover {
+	background-color: #3b5998;
+}
+
 .btn-custom.disabled,
 input[type="button"]:disabled,
 input[type="submit"]:disabled,
@@ -1271,12 +1287,6 @@ button.close:hover {
 
 .badge-important {
 	background-color: #f26522;
-}
-
-.btn-orange,
-.btn-orange:focus {
-	color: #fff;
-	background-color: #f26222;
 }
 
 .dropdown-menu {
@@ -2347,6 +2357,12 @@ img.sp-image.loaded,
 
 .btn-primary {
 	color: #fff !important;
+}
+
+.btn-orange,
+.btn-orange:focus {
+	color: #fff;
+	background-color: #f26222;
 }
 
 .btn-buyer,

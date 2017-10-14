@@ -35,35 +35,9 @@ router.get('/planos-vendedor', ensureAuthenticated, function (req, res, next) {
 });
 
 /* GET plans page. */
-router.get('/planos-vendedor-brasil', ensureAuthenticated, function (req, res, next) {
-    res.render('planSellerBrazil', {
-        title: 'W1Buy :: Planos Vendedor Brasil',
-        user: req.user,
-        script: [
-            '/javascripts/utilities.js',
-            '/javascripts/account.js',
-            '/javascripts/plans.js'
-        ]
-    });
-});
-
-/* GET plans page. */
 router.get('/plano-vendedor', ensureAuthenticated, function (req, res, next) {
     res.render('planSellerSingle', {
         title: 'W1Buy :: Plano Vendedor',
-        user: req.user,
-        script: [
-            '/javascripts/utilities.js',
-            '/javascripts/account.js',
-            '/javascripts/plans.js'
-        ]
-    });
-});
-
-/* GET plans page. */
-router.get('/plano-vendedor-brasil', ensureAuthenticated, function (req, res, next) {
-    res.render('planSellerBrazilSingle', {
-        title: 'W1Buy :: Plano Vendedor Brasil',
         user: req.user,
         script: [
             '/javascripts/utilities.js',
@@ -87,19 +61,6 @@ router.get('/planos-comprador', ensureAuthenticated, function (req, res, next) {
 });
 
 /* GET plans page. */
-router.get('/planos-comprador-brasil', ensureAuthenticated, function (req, res, next) {
-    res.render('planBuyerBrazil', {
-        title: 'W1Buy :: Planos Comprador Brasil',
-        user: req.user,
-        script: [
-            '/javascripts/utilities.js',
-            '/javascripts/account.js',
-            '/javascripts/plans.js'
-        ]
-    });
-});
-
-/* GET plans page. */
 router.get('/plano-comprador', ensureAuthenticated, function (req, res, next) {
     res.render('planBuyerSingle', {
         title: 'W1Buy :: Plano Comprador',
@@ -113,9 +74,9 @@ router.get('/plano-comprador', ensureAuthenticated, function (req, res, next) {
 });
 
 /* GET plans page. */
-router.get('/plano-comprador-brasil', ensureAuthenticated, function (req, res, next) {
-    res.render('planBuyerBrazilSingle', {
-        title: 'W1Buy :: Plano Comprador Brasil',
+router.get('/planos-brasil', ensureAuthenticated, function (req, res, next) {
+    res.render('plansBrazil', {
+        title: 'W1Buy :: Planos Brasil',
         user: req.user,
         script: [
             '/javascripts/utilities.js',
