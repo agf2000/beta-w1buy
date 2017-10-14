@@ -242,7 +242,7 @@ $(function () {
         window.location.href = '/contas/meusanuncios';
     });
 
-    if (!my.userInfo.Region && !my.userInfo.City) {
+    if (!my.userInfo.Region || !my.userInfo.City) {
         $('#alertNoCity').removeClass('hidden');
         $('#btnSavePost').attr({
             disabled: true,
