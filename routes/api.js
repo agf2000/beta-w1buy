@@ -10,8 +10,8 @@ const messageController = require('../controllers/messageController');
 const psController = require('../controllers/psController');
 const ensureAuthenticated = require('../process/js/ensureAuthenticated');
 const thumb = require('node-thumbnail').thumb;
-const PagSeguro = require('pagseguro-nodejs');
-// const PagSeguro = require('pagseguro');
+const PagSeguroNodeJS = require('pagseguro-nodejs');
+const PagSeguro = require('pagseguro');
 const camaro = require('camaro');
 
 const router = express.Router();
@@ -348,8 +348,8 @@ router.get('/buyPlan', function (req, res, next) {
 router.get('/transactions', function (req, res, next) {
 
     /* pagSeguro Account */
-    let pagSeguro = new PagSeguro({
-        mode: 'sandbox',
+    let pagSeguro = new PagSeguroNodeJS({
+        mode: PagSeguroNodeJS.MODE_SANDBOX,
         email: 'agf_2000@hotmail.com',
         token: '110A09A541644C75A950B8369820361B'
     });
@@ -365,6 +365,49 @@ router.get('/transactions', function (req, res, next) {
     });
 
     next();
+});
+
+router.post('/updatePSAccount', function (req, res, next) {
+    if (req.query.transaction_id) {
+
+        /* pagSeguro Account */
+        let pagSeguro = new PagSeguroNodeJS({
+            mode: PagSeguroNodeJS.MODE_SANDBOX,
+            email: 'agf_2000@hotmail.com',
+            token: '110A09A541644C75A950B8369820361B'
+        });
+
+        pagSeguro.transaction(req.query.transaction_id, function (success, response) {
+            if (success) {
+                console.log('Success');
+                console.log(response);
+
+                const template = {
+                    data: '//status'
+                };
+
+                let status = camaro(response, template).data;
+
+                if (status === '3') {
+                    peopleController.updateAccount(req, res, req.query, status, req.query.transaction_id, function (records) {
+                        if (!records.error) {
+                            res.json({
+                                records,
+                                "status": status
+                            });
+                        }
+                    });
+                } else {
+                    res.json({
+                        "status": status
+                    });
+                }
+            } else {
+                console.log('Error');
+                console.error(response);
+            }
+        });
+    }
 });
 
 // Seller report plans

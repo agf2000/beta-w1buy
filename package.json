@@ -71,7 +71,7 @@
 		"slider-pro": "^1.3.0",
 		"smoothscroll": "^0.3.0",
 		"socket.io": "1.7.4",
-		"sweetalert2": "^6.6.5"
+		"sweetalert2": "^6.10.2"
 	},
 	"devDependencies": {
 		"gulp": "^3.9.1",

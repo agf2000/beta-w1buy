@@ -5,6 +5,8 @@ $(function () {
     // vscode-fold=1
     my.userInfo = JSON.parse(userInfo);
 
+    $('[data-toggle="tooltip"]').tooltip();
+
     // Socket.io for messages count indicator    
     let client = io.connect('http://' + window.location.host, {
         path: "/socket.io"
@@ -25,68 +27,68 @@ $(function () {
         if (my.userInfo.AccountsInfo.length > 0) {
             $.each(my.userInfo.AccountsInfo, function (idx, account) {
                 if (account.AccountType == "seller") {
-                    switch (account.AccountLevel) {
-                        case 1:
-                            $('#iStars i').eq(0).tooltip('hide').attr({
-                                'data-original-title': 'Esta conta tem um plano Bronze Vendedor. Clique aqui para configurar seu relatório.',
-                                'onclick': 'window.location = "/meurelatorio"',
-                                'class': 'glyphicon glyphicon-star accountStar bronze'
-                            });
-                            break;
-                        case 2:
-                            $('#iStars i').eq(0).tooltip('hide').attr({
-                                'data-original-title': 'Esta conta tem um plano Prata Vendedor. Clique aqui para configurar seu relatório.',
-                                'onclick': 'window.location = "/meurelatorio"',
-                                'class': 'glyphicon glyphicon-star accountStar silver'
-                            });
-                            break;
-                        case 3:
-                            $('#iStars i').eq(0).tooltip('hide').attr({
-                                'data-original-title': 'Esta conta tem um plano Ouro Vendedor. Clique aqui para configurar seu relatório.',
-                                'onclick': 'window.location = "/meurelatorio"',
-                                'class': 'glyphicon glyphicon-star accountStar gold'
-                            });
-                            break;
-                        default:
-                            $('#iStars i').eq(1).tooltip('hide').attr({
-                                'data-original-title': '',
-                                'class': 'fa fa-user'
-                            });
-                            break;
-                    }
+                    $('.iStars i').eq(0).tooltip('hide').css({
+                        'cursor': 'pointer'
+                    }).removeClass('hidden');
+                    $('#iStarsMobile i').eq(0).tooltip('hide').removeClass('hidden');
+                    // switch (account.AccountLevel) {
+                    //     case 1:
+                    //         $('#iStars i').eq(0).tooltip('hide').attr({
+                    //             'data-original-title': 'Esta conta tem um plano Bronze Vendedor. Clique aqui para configurar seu relatório.',
+                    //             'onclick': 'window.location = "/meurelatorio"',
+                    //             'class': 'glyphicon glyphicon-star accountStar bronze'
+                    //         });
+                    //         break;
+                    //     case 2:
+                    //         $('#iStars i').eq(0).tooltip('hide').attr({
+                    //             'data-original-title': 'Esta conta tem um plano Prata Vendedor. Clique aqui para configurar seu relatório.',
+                    //             'onclick': 'window.location = "/meurelatorio"',
+                    //             'class': 'glyphicon glyphicon-star accountStar silver'
+                    //         });
+                    //         break;
+                    //     case 3:
+                    //         $('#iStars i').eq(0).tooltip('hide').attr({
+                    //             'data-original-title': 'Esta conta tem um plano Ouro Vendedor. Clique aqui para configurar seu relatório.',
+                    //             'onclick': 'window.location = "/meurelatorio"',
+                    //             'class': 'glyphicon glyphicon-star accountStar gold'
+                    //         });
+                    //         break;
+                    //     default:
+                    //         $('#iStars i').eq(1).tooltip('hide').attr({
+                    //             'data-original-title': '',
+                    //             'class': 'fa fa-user'
+                    //         });
+                    //         break;
+                    // }
                 } else {
-                    switch (account.AccountLevel) {
-                        case 1:
-                            $('#iStars i').eq(1).tooltip('hide').attr({
-                                'data-original-title': 'Esta conta tem um plano Bronze Comprador',
-                                'class': 'glyphicon glyphicon-star accountStar bronze'
-                            });
-                            break;
-                        case 2:
-                            $('#iStars i').eq(1).tooltip('hide').attr({
-                                'data-original-title': 'Esta conta tem um plano Prata Comprador',
-                                'class': 'glyphicon glyphicon-star accountStar silver'
-                            });
-                            break;
-                        case 3:
-                            $('#iStars i').eq(1).tooltip('hide').attr({
-                                'data-original-title': 'Esta conta tem um plano Ouro Comprador',
-                                'class': 'glyphicon glyphicon-star accountStar gold'
-                            });
-                            break;
-                        default:
-                            $('#iStars i').eq(1).tooltip('hide').attr({
-                                'data-original-title': '',
-                                'class': 'fa fa-user'
-                            });
-                            break;
-                    }
-
-                    $('.expiryDate').removeClass('hidden');
-                    $('#txtBoxExpiryDate').prop('required', true);
-                    $('.localesFilter').removeClass('hidden');
-                    $('.postQty').removeClass('hidden');
-                    $('#txtBoxQty').prop('required', true);
+                    $('.iStars i').eq(1).tooltip('hide').removeClass('hidden');
+                    $('#iStarsMobile i').eq(1).tooltip('hide').removeClass('hidden');
+                    // switch (account.AccountLevel) {
+                    //     case 1:
+                    //         $('#iStars i').eq(1).tooltip('hide').attr({
+                    //             'data-original-title': 'Esta conta tem um plano Bronze Comprador',
+                    //             'class': 'glyphicon glyphicon-star accountStar bronze'
+                    //         });
+                    //         break;
+                    //     case 2:
+                    //         $('#iStars i').eq(1).tooltip('hide').attr({
+                    //             'data-original-title': 'Esta conta tem um plano Prata Comprador',
+                    //             'class': 'glyphicon glyphicon-star accountStar silver'
+                    //         });
+                    //         break;
+                    //     case 3:
+                    //         $('#iStars i').eq(1).tooltip('hide').attr({
+                    //             'data-original-title': 'Esta conta tem um plano Ouro Comprador',
+                    //             'class': 'glyphicon glyphicon-star accountStar gold'
+                    //         });
+                    //         break;
+                    //     default:
+                    //         $('#iStars i').eq(1).tooltip('hide').attr({
+                    //             'data-original-title': '',
+                    //             'class': 'fa fa-user'
+                    //         });
+                    //         break;
+                    // }
                 }
             });
         }

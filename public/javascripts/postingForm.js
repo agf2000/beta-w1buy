@@ -255,21 +255,14 @@ $(function () {
             $.each(my.userInfo.AccountsInfo, function (idx, account) {
                 if (account.AccountType == "buyer") {
 
-                    my.localesLimit = 0;
+                    my.localesLimit = -1;
 
-                    switch (account.AccountLevel) {
-                        case 1:
-                            my.localesLimit = 3;
-                            break;
-                        case 2:
-                            my.localesLimit = 7;
-                            break;
-                        default:
-                            my.localesLimit = 20;
+                    if (account.AccountLevel === 1) {
+                        my.localesLimit = 5;
                     }
 
                     $('#selectLocales').tagsinput({
-                        maxTags: my.localesLimit,
+                        // maxTags: my.localesLimit,
                         itemValue: 'localeId',
                         itemText: 'localeName',
                         freeInput: false
@@ -290,7 +283,9 @@ $(function () {
                         my.localesRemains++;
                     });
 
-                    $('#localesCount').text(my.localesRemains + '/' + my.localesLimit);
+                    if (account.AccountLevel === 1) {
+                        $('#localesCount').text(my.localesRemains + '/' + my.localesLimit);
+                    }
 
                     $('#txtBoxQty').attr({
                         'readonly': true,
@@ -508,7 +503,7 @@ let openPostingLocales = function () {
         e.preventDefault();
         if (parseInt($('#txtBoxLocaleQty').val()) > 0) {
             let txtValue = parseInt($('#txtBoxLocaleQty').val());
-            if (my.localesRemains == my.localesLimit) {
+            if (my.localesRemains == my.localesLimit && my.localesLimit !== -1) {
                 swal({
                     title: "Atenção!",
                     text: "O limite de localidades foi alcançado.",
@@ -577,8 +572,13 @@ let openPostingLocales = function () {
         // selectedStates.trigger('change');
 
         $('#txtBoxLocaleQty').val(1);
-        $('#localesCount').text(my.localesRemains + '/' + my.localesLimit);
-        $('#btnAddLocale').html('Adicionar mais');
+        if (my.localesLimit !== -1) {
+            $('#localesCount').text(my.localesRemains + '/' + my.localesLimit);
+        }
+
+        $('#btnAddLocale').next('span').html('<i class="glyphicon glyphicon-chevron-left"></i> Adicione ' + (my.localesLimit !== -1 ? 'mais' : 'até 5') + ' localidades');
+        // $('#btnAddLocale').html('Adicionar mais');
+
         $('#localesCount').next('span').html('');
         $('#btnCloseLocales').removeClass('hidden');
         // }
@@ -589,7 +589,10 @@ let openPostingLocales = function () {
         $('#txtBoxQty').val(parseInt(my.localesQtyCount));
         my.localesRemains = my.localesRemains - 1;
         my.localeCounter = (parseInt(my.localeCounter) - 1);
-        $('#btnAddLocale').children('span').text(my.localesRemains + '/' + my.localesLimit);
+
+        if (my.localesLimit !== -1) {
+            $('#btnAddLocale').children('span').text(my.localesRemains + '/' + my.localesLimit);
+        }
 
         for (let i = my.selectedLocales.length - 1; i >= 0; i--) {
             if (my.selectedLocales[i].LocaleId === event.item.LocaleId) {

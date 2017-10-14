@@ -13,35 +13,24 @@ $(function () {
 
             $('a[href="meurelatorio"]').parent().removeClass('hidden');
 
-            my.localesLimit = 0;
-            my.tagsLimit = 0;
+            my.localesLimit = -1;
+            my.tagsLimit = -1;
 
-            switch (account.AccountLevel) {
-                case 1:
-                    my.plansLimit = 3;
-                    my.localesLimit = 3;
-                    my.tagsLimit = 3;
-                    break;
-                case 2:
-                    my.plansLimit = 7;
-                    my.localesLimit = 7;
-                    my.tagsLimit = 7;
-                    break;
-                default:
-                    my.plansLimit = 20;
-                    my.localesLimit = 20;
-                    my.tagsLimit = 20;
+            if (account.AccountLevel === 1) {
+                my.plansLimit = 5;
+                my.localesLimit = 5;
+                my.tagsLimit = 5;
             }
 
             $('#selectLocales').tagsinput({
-                maxTags: my.localesLimit,
+                // maxTags: my.localesLimit,
                 itemValue: 'LocaleId',
                 itemText: 'City',
                 freeInput: false
             });
 
             $('#txtBoxKeywords').tagsinput({
-                maxTags: my.tagsLimit,
+                // maxTags: my.tagsLimit,
                 freeInput: false,
                 trimValue: true
             });
@@ -50,9 +39,11 @@ $(function () {
             my.tagsRemains = 0;
             my.plansRemains = 0;
 
-            $('#btnAddLocale span').text(my.localesRemains + '/' + my.localesLimit);
-            $('#btnAddTags span').text(my.tagsRemains + '/' + my.tagsLimit);
-            $('#btnAddReportPlan span').text(my.plansRemains + '/' + my.plansLimit);
+            if (account.AccountLevel === 1) {
+                $('#btnAddLocale span').text(my.localesRemains + '/' + my.localesLimit);
+                $('#btnAddTags span').text(my.tagsRemains + '/' + my.tagsLimit);
+                $('#btnAddReportPlan span').text(my.plansRemains + '/' + my.plansLimit);
+            }
         }
     });
 
@@ -173,7 +164,7 @@ $(function () {
         }
         e.preventDefault();
 
-        if (my.localesRemains == my.localesLimit) {
+        if (my.localesRemains == my.localesLimit && my.localesLimit !== -1) {
             swal({
                 title: "Atenção!",
                 text: "O limite de localidades foi alcançado.",
@@ -199,16 +190,20 @@ $(function () {
                 my.localesRemains++;
                 $('#select2States').select2('val', '');
                 $('#select2Cities').select2('val', '');
-                $('#btnAddLocale span').text(my.localesRemains + '/' + my.localesLimit);
+                if (my.localesLimit !== -1) {
+                    $('#btnAddLocale span').text(my.localesRemains + '/' + my.localesLimit);
+                }
                 $('#btnAddLocale').next('span').html('');
             }
         }
     });
 
-    $('#selectLocales').on('beforeItemRemove', function (event) {
-        my.localesRemains = my.localesRemains - 1;
-        $('#btnAddLocale span').text(my.localesRemains + '/' + my.localesLimit);
-    });
+    if (my.localesLimit !== -1) {
+        $('#selectLocales').on('beforeItemRemove', function (event) {
+            my.localesRemains = my.localesRemains - 1;
+            $('#btnAddLocale span').text(my.localesRemains + '/' + my.localesLimit);
+        });
+    }
 
     $('#btnAddTags').click(function (e) {
         if (e.clientX === 0) {
@@ -216,7 +211,7 @@ $(function () {
         }
         e.preventDefault();
 
-        if (my.tagsRemains == my.tagsLimit) {
+        if (my.tagsRemains == my.tagsLimit && my.tagsLimit !== -1) {
             swal({
                 title: "Atenção!",
                 text: "O limite de produtos foi alcançado.",
@@ -229,16 +224,20 @@ $(function () {
                 $('#txtBoxKeywords').tagsinput('add', $('#txtBoxKeyword').val());
                 $('#txtBoxKeyword').val('');
                 $('#txtBoxKeyword').focus();
-                my.tagsRemains++;
-                $('#btnAddTags span').text(my.tagsRemains + '/' + my.tagsLimit);
+                if (my.tagsLimit !== -1) {
+                    my.tagsRemains++;
+                    $('#btnAddTags span').text(my.tagsRemains + '/' + my.tagsLimit);
+                }
             }
         }
     });
 
-    $('#txtBoxKeywords').on('beforeItemRemove', function (event) {
-        my.tagsRemains = my.tagsRemains - 1;
-        $('#btnAddTags span').text(my.tagsRemains + '/' + my.tagsLimit);
-    });
+    if (my.tagsLimit !== -1) {
+        $('#txtBoxKeywords').on('beforeItemRemove', function (event) {
+            my.tagsRemains = my.tagsRemains - 1;
+            $('#btnAddTags span').text(my.tagsRemains + '/' + my.tagsLimit);
+        });
+    }
 
     $('#btnSaveReportPlan').click(function (e) {
         if (e.clientX === 0) {
@@ -347,10 +346,14 @@ $(function () {
                         }
 
                         my.sellerReportPlanId = 0;
-                        my.localesRemains = 0;
-                        $('#btnAddLocale span').text(my.localesRemains + '/' + my.localesLimit);
-                        my.tagsRemains = 0;
-                        $('#btnAddTags span').text(my.tagsRemains + '/' + my.tagsLimit);
+                        if (my.localesLimit !== -1) {
+                            my.localesRemains = 0;
+                            $('#btnAddLocale span').text(my.localesRemains + '/' + my.localesLimit);
+                        }
+                        if (my.tagsLimit !== -1) {
+                            my.tagsRemains = 0;
+                            $('#btnAddTags span').text(my.tagsRemains + '/' + my.tagsLimit);
+                        }
                         $('#selectLocales').tagsinput('removeAll');
                         $('#txtBoxKeywords').tagsinput('removeAll');
                         $('#reportPlansGrid').data('kendoGrid').refresh();
@@ -447,8 +450,10 @@ $(function () {
                                 $.getJSON('/api/getSellerReportPlan?planId=' + my.sellerReportPlanId, function (data) {
                                     $.each(data[0].Keywords, function (idx, word) {
                                         $('#txtBoxKeywords').tagsinput('add', word.KeywordName);
-                                        my.tagsRemains++;
-                                        $('#btnAddTags span').text(my.tagsRemains + '/' + my.tagsLimit);
+                                        if (my.tagsLimit !== -1) {
+                                            my.tagsRemains++;
+                                            $('#btnAddTags span').text(my.tagsRemains + '/' + my.tagsLimit);
+                                        }
                                     });
 
                                     $.each(data[0].Locales, function (idx, locale) {
@@ -458,7 +463,9 @@ $(function () {
                                             Region: locale.Region
                                         });
                                         my.localesRemains++;
-                                        $('#btnAddLocale span').text(my.localesRemains + '/' + my.localesLimit);
+                                        if (my.localesLimit !== -1) {
+                                            $('#btnAddLocale span').text(my.localesRemains + '/' + my.localesLimit);
+                                        }
                                     });
                                 });
 
@@ -553,7 +560,9 @@ $(function () {
 
             if (grid.dataSource.view().length) {
                 my.plansRemains = grid.dataSource.view().length;
-                $('#btnAddReportPlan span').text(grid.dataSource.view().length + '/' + my.plansLimit);
+                if (my.localesLimit !== -1) {
+                    $('#btnAddReportPlan span').text(grid.dataSource.view().length + '/' + my.plansLimit);
+                }
             }
         }
     });
@@ -565,10 +574,14 @@ $(function () {
         e.preventDefault();
 
         my.sellerReportPlanId = 0;
-        my.localesRemains = 0;
-        $('#btnAddLocale span').text(my.localesRemains + '/' + my.localesLimit);
-        my.tagsRemains = 0;
-        $('#btnAddTags span').text(my.tagsRemains + '/' + my.tagsLimit);
+        if (my.localesLimit !== -1) {
+            my.localesRemains = 0;
+            $('#btnAddLocale span').text(my.localesRemains + '/' + my.localesLimit);
+        }
+        if (my.tagsLimit !== -1) {
+            my.tagsRemains = 0;
+            $('#btnAddTags span').text(my.tagsRemains + '/' + my.tagsLimit);
+        }
         $('#selectLocales').tagsinput('removeAll');
         $('#txtBoxKeywords').tagsinput('removeAll');
         $('#reportPlansGrid').data('kendoGrid').refresh();

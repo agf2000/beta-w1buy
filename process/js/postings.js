@@ -511,25 +511,25 @@ function expandMsg() {
                                         }
 
                                         if (my.userInfo.AccountInfo != null) {
-                                            switch (my.userInfo.AccountInfo.AccountLevel) {
-                                                case 1:
-                                                    $('.sign-in').find('i').attr({
-                                                        'class': 'glyphicon glyphicon-star accountStar bronze',
-                                                        'title': 'Esta conta tem um plano Bronze'
-                                                    });
-                                                    break;
-                                                case 2:
-                                                    $('.sign-in').find('i').attr({
-                                                        'class': 'glyphicon glyphicon-star accountStar silver',
-                                                        'title': 'Esta conta tem um plano Prata'
-                                                    });
-                                                    break;
-                                                default:
-                                                    $('.sign-in').find('i').attr({
-                                                        'class': 'glyphicon glyphicon-star accountStar gold',
-                                                        'title': 'Esta conta tem um plano Ouro'
-                                                    });
-                                            }
+                                            // switch (my.userInfo.AccountInfo.AccountLevel) {
+                                            //     case 1:
+                                            //         $('.sign-in').find('i').attr({
+                                            //             'class': 'glyphicon glyphicon-star accountStar bronze',
+                                            //             'title': 'Esta conta tem um plano Bronze'
+                                            //         });
+                                            //         break;
+                                            //     case 2:
+                                            //         $('.sign-in').find('i').attr({
+                                            //             'class': 'glyphicon glyphicon-star accountStar silver',
+                                            //             'title': 'Esta conta tem um plano Prata'
+                                            //         });
+                                            //         break;
+                                            //     default:
+                                            //         $('.sign-in').find('i').attr({
+                                            //             'class': 'glyphicon glyphicon-star accountStar gold',
+                                            //             'title': 'Esta conta tem um plano Ouro'
+                                            //         });
+                                            // }
                                         } else {
                                             $('#premiumAccount').removeClass('hidden');
                                         }

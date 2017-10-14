@@ -170,7 +170,7 @@ router.get('/meurelatorio', ensureAuthenticated, function (req, res, next) {
 			'/lib/bootstrap-tagsinput/js/bootstrap-tagsinput.min.js',
 			'/javascripts/utilities.js',
 			'/javascripts/account.js',
-			'/javascripts/sellerreport.js'
+			'/javascripts/sellerReport.js'
 		]
 	});
 });

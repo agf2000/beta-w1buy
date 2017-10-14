@@ -493,6 +493,56 @@ exports.getPeopleLocales = function (req, res, year, cb) {
     };
 };
 
+exports.updateAccount = function (req, res, reqBody, status, orderid, cb) {
+    try {
+        if (!reqBody) throw new Error("Input not valid");
+        let data = reqBody;
+        if (data) {
+            let sqlInst = '';
+
+            if (data.accType === 'seller-buyer') {
+                sqlInst += `delete from w1buy_user_account where userid = ${data.userId};
+
+                            insert into w1buy_user_account (portalid, userid, accountlevel, createdondate, payprovider, paid, paidondate, orderid, accounttype)
+                            values (${data.portalId}, ${data.userId}, '${data.accLevel}', getdate(), '${data.payProvider}', ${status === '3' ? 1 : 0}, getdate(), '${orderid}', 'seller');
+
+                            insert into w1buy_user_account (portalid, userid, accountlevel, createdondate, payprovider, paid, paidondate, orderid, accounttype)
+                            values (${data.portalId}, ${data.userId}, '${data.accLevel}', getdate(), '${data.payProvider}', ${status === '3' ? 1 : 0}, getdate(), '${orderid}', 'buyer');`;
+            } else {
+                if (data.accType === 'seller') {
+                    sqlInst += `delete from w1buy_user_account where userid = ${data.userId} and accounttype = 'seller';
+
+                                insert into w1buy_user_account (portalid, userid, accountlevel, createdondate, payprovider, paid, paidondate, orderid, accounttype)
+                                values (${data.portalId}, ${data.userId}, '${data.accLevel}', getdate(), '${data.payProvider}', ${status === '3' ? 1 : 0}, getdate(), '${orderid}', 'seller');`;
+                } else {
+                    sqlInst += `delete from w1buy_user_account where userid = ${data.userId} and accounttype = 'buyer';
+                    
+                                insert into w1buy_user_account (portalid, userid, accountlevel, createdondate, payprovider, paid, paidondate, orderid, accounttype)
+                                values (${data.portalId}, ${data.userId}, '${data.accLevel}', getdate(), '${data.payProvider}', ${status === '3' ? 1 : 0}, getdate(), '${orderid}', 'buyer');`;
+                }
+            }
+
+            sqlInst += `select * from w1buy_user_account where userid = ${data.userId};`
+
+            db.querySql(sqlInst, function (records, err) {
+                if (err) {
+                    console.log(err.message);
+                    cb({
+                        "error": err.message
+                    });
+                } else {
+                    cb(records.recordsets[0]);
+                }
+            }, true);
+        } else {
+            // throw new Error("Input not valid");
+            return res.status(500).json(`Input not valid (status: 500)`);
+        }
+    } catch (ex) {
+        res.send(ex);
+    };
+}
+
 // Gets seller report plans
 // vscode-fold=11
 exports.getSellerReportPlans = function (req, res, userId, cb) {

@@ -1248,18 +1248,25 @@ button.close:hover {
 	text-align: center;
 }
 
-#iStars i {
-	left: 15px;
+.iStars i {
+	position: relative;
+	top: -5px;
+	z-index: 1050;
+	left: 880px;
+	margin-left: 10px;
+	color: gold;
 }
 
-#iStars i,
-#iStars i:nth-child(2) {
-	position: absolute;
-	/*top: -1px;*/
+.iStars i:nth-child(2) {
+	color: #fff !important;
 }
 
-#iStars i:nth-child(2) {
-	left: 35px;
+.iStars i:nth-child(2):hover {
+	color: inherit;
+}
+
+#iStarsMobile i {
+	color: #fff;
 }
 
 .badge-important {
@@ -3011,18 +3018,24 @@ a.btn-primary {
 		display: block !important;
 	}
 	.navbar-nav {
-		float: none !important;
+		/*float: none !important;*/
 		margin: 7.5px -15px;
 	}
-	.navbar-nav>li {
+	/*.navbar-nav>li {
 		float: none;
-	}
+	}*/
 	.navbar-nav>li>a {
 		padding-top: 10px;
 		padding-bottom: 10px;
 	}
 	#imgSalesman {
 		width: 25%;
+	}
+	.iStars i {
+		left: 670px;
+	}
+	.iStars i:nth-child(2) {
+		left: 670px;
 	}
 }
 
@@ -3698,6 +3711,16 @@ a.btn-primary {
 	#header .header-text-right p {
 		font-size: 14px;
 		line-height: 22px;
+	}
+	#iStarsMobile i {
+		top: 90px !important;
+		color: #fff !important;
+	}
+	#iStarsMobile i:nth-child(1) {
+		right: 100px !important;
+	}
+	#iStarsMobile i:nth-child(2) {
+		right: 95px !important;
 	}
 }
 

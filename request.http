@@ -5,3 +5,5 @@ GET http://127.0.0.1:8080/api/getSellerReportPlans?userId=169 HTTP/1.1
 GET http://127.0.0.1:8080/api/getSellerReportPlan?planId=6 HTTP/1.1
 
 ###
+
+GET http://127.0.0.1:8080/api/transactions?transaction_id=405C7F5BEF7D4B8CAE2BA1BFB46CDB77

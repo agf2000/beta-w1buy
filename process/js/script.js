@@ -48,6 +48,7 @@
 			navMenu += '<div class="active pull-left slogan" style="font-size: 16px; font-style: italic; margin-top: 30px;"><a name="slogan">Conectando Pessoas e Negocios!!</a></div>';
 			navMenu += '<div class="nav-menu-links">';
 			navMenu += '<ul>';
+			navMenu += '<li><span id="iStarsMobile">' + $('.iStars').html() + '</span></li>';
 			navMenu += $('#navigation .nav').html();
 			navMenu += '</ul>';
 			navMenu += '</div>';
