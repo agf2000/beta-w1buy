@@ -339,13 +339,13 @@ $(function () {
         });
     }
 
-    $('#btnGetPlans').click(function (e) {
+    $('#btnGetBuyerPlans').click(function (e) {
         if (e.clientX === 0) {
             return false;
         }
         e.preventDefault();
 
-        window.location.href = '/planos-comprador';
+        window.location.href = my.planUrl || '/planos-comprador';
     });
 
     let postInfo;

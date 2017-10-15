@@ -342,7 +342,7 @@ $(function () {
         }
     });
 
-    $('#btnGetPlan').click(function (e) {
+    $('#btnGetSellerPlan').click(function (e) {
         if (e.clientX === 0) {
             return false;
         }

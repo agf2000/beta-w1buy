@@ -32,7 +32,12 @@ $(function () {
                     }).removeClass('hidden');
                     $('#iStarsMobile i').eq(0).tooltip('hide').removeClass('hidden');
 
-                    my.planUrl = '/plano-comprador';
+                    my.sellerPlanUrl = '/plano-comprador';
+                    $('#btnGetSellerPlans').hide();
+
+                    if (my.userInfo.AccountsInfo.length === 1) {
+                        $('#btnGetBrazilSellerPlan').removeClass('hidden');
+                    }
                     // switch (account.AccountLevel) {
                     //     case 1:
                     //         $('#iStars i').eq(0).tooltip('hide').attr({
@@ -66,7 +71,12 @@ $(function () {
                     $('.iStars i').eq(1).tooltip('hide').removeClass('hidden');
                     $('#iStarsMobile i').eq(1).tooltip('hide').removeClass('hidden');
 
-                    my.planUrl = '/plano-vendedor';
+                    my.buyerPlanUrl = '/plano-vendedor';
+                    $('#btnGetBuyerPlans').hide();
+
+                    if (my.userInfo.AccountsInfo.length === 1) {
+                        $('#btnGetBrazilBuyerPlan').removeClass('hidden');
+                    }
                     // switch (account.AccountLevel) {
                     //     case 1:
                     //         $('#iStars i').eq(1).tooltip('hide').attr({
