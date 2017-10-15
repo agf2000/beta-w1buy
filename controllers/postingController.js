@@ -223,7 +223,8 @@ exports.getPostings = function (req, res, portalId, term, localeId, pageIndex, p
             sqlInst += "join w1buy_postingLocales pl on p.postingid = pl.postingid "
             sqlInst += "join w1buy_postingKeywords pk on p.postingid = pk.postingid ";
             sqlInst += "where pl.localeid = " + localeId + " ";
-            sqlInst += "and (pk.keywordname like '%" + term + "%' and not pk.keywordname like '%[A-Z]" + term + "%' and not pk.keywordname like '%" + term + "[A-Z]%');";
+            // sqlInst += "and (pk.keywordname like '%" + term + "%' and not pk.keywordname like '%[A-Z]" + term + "%' and not pk.keywordname like '%" + term + "[A-Z]%');";
+            sqlInst += "and (pk.keywordname like '" + term + "%');";
         }
         db.querySql(sqlInst, function (data, err) {
             if (err) {
@@ -353,7 +354,8 @@ exports.getPostingsLocalesCount = function (req, res, portalId, term) {
             sqlInst += "join w1buy_postings p on p.postingid = pl.postingid ";
             sqlInst += "join w1buy_postingkeywords pk on pl.postingid = pk.postingid ";
             sqlInst += "where isnull(p.complete, 0) = 0 and p.portalid = " + portalId + " and ";
-            sqlInst += "(pk.keywordname like '%" + term + "%' and not pk.keywordname like '%[A-Z]" + term + "%' and not pk.keywordname like '%" + term + "[A-Z]%'); ";
+            // sqlInst += "(pk.keywordname like '%" + term + "%' and not pk.keywordname like '%[A-Z]" + term + "%' and not pk.keywordname like '%" + term + "[A-Z]%'); ";
+            sqlInst += "(pk.keywordname like '" + term + "%'); ";
             sqlInst += "select *, count(*) as locales from #temp group by localeid, city; ";
             sqlInst += "drop table #temp;";
         }

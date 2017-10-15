@@ -760,7 +760,7 @@ input[type="button"].btn-plan:hover,
 input[type="submit"].btn-plan:hover,
 input[type="reset"].btn-plan:hover,
 button.btn-plan:hover {
-	background-color: #3b5998;
+	background-color: #3b5998 !important;
 }
 
 .btn-custom.disabled,

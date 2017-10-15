@@ -342,6 +342,15 @@ $(function () {
         }
     });
 
+    $('#btnGetPlan').click(function (e) {
+        if (e.clientX === 0) {
+            return false;
+        }
+        e.preventDefault();
+
+        window.location.href = my.planUrl || '/planos-vendedor';
+    });
+
 });
 
 my.getItems = function (cnt, term, localeId) {

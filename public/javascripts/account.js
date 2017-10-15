@@ -31,6 +31,8 @@ $(function () {
                         'cursor': 'pointer'
                     }).removeClass('hidden');
                     $('#iStarsMobile i').eq(0).tooltip('hide').removeClass('hidden');
+
+                    my.planUrl = '/plano-comprador';
                     // switch (account.AccountLevel) {
                     //     case 1:
                     //         $('#iStars i').eq(0).tooltip('hide').attr({
@@ -63,6 +65,8 @@ $(function () {
                 } else {
                     $('.iStars i').eq(1).tooltip('hide').removeClass('hidden');
                     $('#iStarsMobile i').eq(1).tooltip('hide').removeClass('hidden');
+
+                    my.planUrl = '/plano-vendedor';
                     // switch (account.AccountLevel) {
                     //     case 1:
                     //         $('#iStars i').eq(1).tooltip('hide').attr({
