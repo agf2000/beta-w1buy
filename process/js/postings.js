@@ -342,13 +342,13 @@ $(function () {
         }
     });
 
-    $('#btnGetSellerPlan').click(function (e) {
+    $('#btnGetSellerPlans').click(function (e) {
         if (e.clientX === 0) {
             return false;
         }
         e.preventDefault();
 
-        window.location.href = my.planUrl || '/planos-vendedor';
+        window.location.href = my.sellerPlanUrl || '/planos-vendedor';
     });
 
 });

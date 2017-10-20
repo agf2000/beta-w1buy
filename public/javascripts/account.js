@@ -35,7 +35,7 @@ $(function () {
                     my.sellerPlanUrl = '/plano-comprador';
                     $('#btnGetSellerPlans').hide();
 
-                    if (my.userInfo.AccountsInfo.length === 1) {
+                    if (my.userInfo.AccountsInfo.length === 1 || account.AccountLevel !== 3) {
                         $('#btnGetBrazilSellerPlan').removeClass('hidden');
                     }
                     // switch (account.AccountLevel) {
@@ -74,7 +74,7 @@ $(function () {
                     my.buyerPlanUrl = '/plano-vendedor';
                     $('#btnGetBuyerPlans').hide();
 
-                    if (my.userInfo.AccountsInfo.length === 1) {
+                    if (my.userInfo.AccountsInfo.length === 1 || account.AccountLevel !== 3) {
                         $('#btnGetBrazilBuyerPlan').removeClass('hidden');
                     }
                     // switch (account.AccountLevel) {

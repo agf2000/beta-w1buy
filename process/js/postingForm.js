@@ -345,7 +345,7 @@ $(function () {
         }
         e.preventDefault();
 
-        window.location.href = my.planUrl || '/planos-comprador';
+        window.location.href = my.buyerPlanUrl || '/planos-comprador';
     });
 
     let postInfo;
