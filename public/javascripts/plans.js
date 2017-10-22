@@ -42,8 +42,7 @@ $(() => {
                             buyerAddressDistrict: my.userInfo.District,
                             buyerCity: my.userInfo.City,
                             buyerRegion: my.userInfo.Region,
-                            buyerAddressPostalCode: my.userInfo.PostalCode,
-                            pagseguro: pagSeguroMode
+                            buyerAddressPostalCode: my.userInfo.PostalCode
                         }
 
                         if (isNaN(my.userInfo.Cell.replace(/[^0-9]/g, ''))) {
