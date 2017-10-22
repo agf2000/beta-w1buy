@@ -364,7 +364,9 @@ router.get('/transactions', function (req, res, next) {
         }
     });
 
-    next();
+    res.json({
+        "response": response
+    });
 });
 
 router.post('/updatePSAccount', function (req, res, next) {

@@ -11,28 +11,8 @@ $(function () {
             $('#select2Countries').trigger("change");
             $('#select2Countries').attr('disabled', true);
         }
-        if (my.userInfo.RegionId) {
-            $('#select2Regions').append($('<option value="' + my.userInfo.RegionId + '" selected>' + (my.userInfo.Region ? my.getStateName(my.userInfo.Region) : '') + '</option>'));
-            $('#select2Regions').trigger("change");
-            $('#select2Regions').attr('disabled', true);
-        }
-        if (my.userInfo.CityId) {
-            $('#select2Cities').append($('<option value="' + my.userInfo.CityId + '" selected>' + my.userInfo.City + '</option>'));
-            $('#select2Cities').trigger("change");
-            $('#select2Cities').attr('disabled', true);
-        }
-        if (my.userInfo.PostalCode) {
-            $('#txtBoxPostalCode').attr({
-                'readonly': true
-            });
-        }
-        if (my.userInfo.Street) {
-            $('#txtBoxStreet').attr({
-                'readonly': true
-            });
-        }
-        if (my.userInfo.District) {
-            $('#txtBoxDistrict').attr({
+        if (my.userInfo.DocId) {
+            $('#txtSSN').attr({
                 'readonly': true
             });
         }
