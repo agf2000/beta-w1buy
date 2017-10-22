@@ -234,8 +234,8 @@ router.get('/buyPlan', function (req, res, next) {
     /* pagSeguro Account */
     let pagSeguro = new PagSeguro({
         mode: 'sandbox',
-        email: 'agf_2000@hotmail.com',
-        token: '110A09A541644C75A950B8369820361B'
+        email: 'barezani@usa.com',
+        token: '459F08A6AF054140BDD1C3C9AFB3EACE'
     });
 
     /* pagSeguro Settings */
@@ -350,8 +350,8 @@ router.get('/transactions', function (req, res, next) {
     /* pagSeguro Account */
     let pagSeguro = new PagSeguroNodeJS({
         mode: PagSeguroNodeJS.MODE_SANDBOX,
-        email: 'agf_2000@hotmail.com',
-        token: '110A09A541644C75A950B8369820361B'
+        email: 'barezani@usa.com',
+        token: '459F08A6AF054140BDD1C3C9AFB3EACE'
     });
 
     pagSeguro.transaction(req.query.transaction_id, function (success, response) {
@@ -375,8 +375,8 @@ router.post('/updatePSAccount', function (req, res, next) {
         /* pagSeguro Account */
         let pagSeguro = new PagSeguroNodeJS({
             mode: PagSeguroNodeJS.MODE_SANDBOX,
-            email: 'agf_2000@hotmail.com',
-            token: '110A09A541644C75A950B8369820361B'
+            email: 'barezani@usa.com',
+            token: '459F08A6AF054140BDD1C3C9AFB3EACE'
         });
 
         pagSeguro.transaction(req.query.transaction_id, function (success, response) {
