@@ -493,33 +493,44 @@ exports.getPeopleLocales = function (req, res, year, cb) {
     };
 };
 
-exports.updateAccount = function (req, res, reqBody, status, orderid, cb) {
+exports.updateAccount = function (req, res, reqBody, status, orderid, plan, cb) {
     try {
         if (!reqBody) throw new Error("Input not valid");
         let data = reqBody;
         if (data) {
             let sqlInst = '';
 
-            if (data.accType === 'seller-buyer') {
-                sqlInst += `delete from w1buy_user_account where userid = ${data.userId};
+            switch (plan) {
+                case "w1buy-plano-comprador":
+                    sqlInst += `delete from w1buy_user_account where userid = ${data.userId} and accounttype= 'buyer'; `;
 
-                            insert into w1buy_user_account (portalid, userid, accountlevel, createdondate, payprovider, paid, paidondate, orderid, accounttype)
-                            values (${data.portalId}, ${data.userId}, '${data.accLevel}', getdate(), '${data.payProvider}', ${status === '3' ? 1 : 0}, getdate(), '${orderid}', 'seller');
+                    sqlInst += `insert into w1buy_user_account (portalid, userid, accountlevel, createdondate, payprovider, paid, paidondate, orderid, accounttype)
+                    values(${data.portalId}, ${data.userId}, '1', getdate(), '${data.payProvider}', 1, getdate(), '${orderid}', 'buyer'); `;
+                    break;
+                case "w1buy-plano-vendedor":
+                    sqlInst += `delete from w1buy_user_account where userid = ${data.userId} and accounttype= 'seller'; `;
 
-                            insert into w1buy_user_account (portalid, userid, accountlevel, createdondate, payprovider, paid, paidondate, orderid, accounttype)
-                            values (${data.portalId}, ${data.userId}, '${data.accLevel}', getdate(), '${data.payProvider}', ${status === '3' ? 1 : 0}, getdate(), '${orderid}', 'buyer');`;
-            } else {
-                if (data.accType === 'seller') {
-                    sqlInst += `delete from w1buy_user_account where userid = ${data.userId} and accounttype = 'seller';
+                    sqlInst += `insert into w1buy_user_account (portalid, userid, accountlevel, createdondate, payprovider, paid, paidondate, orderid, accounttype)
+                    values(${data.portalId}, ${data.userId}, '1', getdate(), '${data.payProvider}', 1, getdate(), '${orderid}', 'seller'); `;
+                    break;
+                case "w1buy-plano-comprador-vendedor":
+                    sqlInst += `delete from w1buy_user_account where userid = ${data.userId}; `;
 
-                                insert into w1buy_user_account (portalid, userid, accountlevel, createdondate, payprovider, paid, paidondate, orderid, accounttype)
-                                values (${data.portalId}, ${data.userId}, '${data.accLevel}', getdate(), '${data.payProvider}', ${status === '3' ? 1 : 0}, getdate(), '${orderid}', 'seller');`;
-                } else {
-                    sqlInst += `delete from w1buy_user_account where userid = ${data.userId} and accounttype = 'buyer';
+                    sqlInst += `insert into w1buy_user_account (portalid, userid, accountlevel, createdondate, payprovider, paid, paidondate, orderid, accounttype)
+                    values(${data.portalId}, ${data.userId}, '1', getdate(), '${data.payProvider}', 1, getdate(), '${orderid}', 'buyer'); `;
+
+                    sqlInst += `insert into w1buy_user_account (portalid, userid, accountlevel, createdondate, payprovider, paid, paidondate, orderid, accounttype)
+                    values(${data.portalId}, ${data.userId}, '1', getdate(), '${data.payProvider}', 1, getdate(), '${orderid}', 'seller'); `;
+                    break;
+                default:
+                    sqlInst += `delete from w1buy_user_account where userid = ${data.userId}; `;
                     
-                                insert into w1buy_user_account (portalid, userid, accountlevel, createdondate, payprovider, paid, paidondate, orderid, accounttype)
-                                values (${data.portalId}, ${data.userId}, '${data.accLevel}', getdate(), '${data.payProvider}', ${status === '3' ? 1 : 0}, getdate(), '${orderid}', 'buyer');`;
-                }
+                    sqlInst += `insert into w1buy_user_account (portalid, userid, accountlevel, createdondate, payprovider, paid, paidondate, orderid, accounttype)
+                    values(${data.portalId}, ${data.userId}, '3', getdate(), '${data.payProvider}', 1, getdate(), '${orderid}', 'buyer'); `;
+
+                    sqlInst += `insert into w1buy_user_account (portalid, userid, accountlevel, createdondate, payprovider, paid, paidondate, orderid, accounttype)
+                    values(${data.portalId}, ${data.userId}, '3', getdate(), '${data.payProvider}', 1, getdate(), '${orderid}', 'seller'); `;
+                    break;
             }
 
             sqlInst += `select * from w1buy_user_account where userid = ${data.userId};`

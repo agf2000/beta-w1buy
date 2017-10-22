@@ -384,14 +384,19 @@ router.post('/updatePSAccount', function (req, res, next) {
                 console.log('Success');
                 console.log(response);
 
-                const template = {
+                const statusTemplate = {
                     data: '//status'
                 };
 
-                let status = camaro(response, template).data;
+                const accTypeTemplate = {
+                    data: '//description'
+                };
+
+                let status = camaro(response, statusTemplate).data,
+                    plan = camaro(response, accTypeTemplate).data;
 
                 if (status === '3') {
-                    peopleController.updateAccount(req, res, req.query, status, req.query.transaction_id, function (records) {
+                    peopleController.updateAccount(req, res, req.query, status, req.query.transaction_id, plan, function (records) {
                         if (!records.error) {
                             res.json({
                                 records,

@@ -2,10 +2,7 @@
 
 $(() => {
 
-    let psId = my.getQuerystring('transaction_id', my.getParameterByName('transaction_id', 0)),
-        accType = 'seller',
-        accLevel = 1,
-        pagSeguroMode = 'sandbox';
+    let psId = my.getQuerystring('transaction_id', my.getParameterByName('transaction_id', 0));
 
     $('.btn-plan').click(function (e) {
         let $btn = this;
@@ -33,9 +30,6 @@ $(() => {
                 // showLoaderOnConfirm: true,
                 preConfirm: function () {
                     return new Promise(function (resolve) {
-
-                        accType = $btn.dataset.accType;
-                        accLevel = $btn.dataset.accLevel;
 
                         let params = {
                             id: $btn.dataset.id,
@@ -100,7 +94,7 @@ $(() => {
     if (psId) {
         $.ajax({
             type: "POST",
-            url: `/api/updatePSAccount?transaction_id=${psId}&userId=${my.userInfo.UserID}&accType=${accType}&portalId=0&accLevel=${accLevel}&payProvider=pagseguro`,
+            url: `/api/updatePSAccount?transaction_id=${psId}&userId=${my.userInfo.UserID}&portalId=0&payProvider=pagseguro`,
             success: function (response) {
                 if (!response.error) {
                     if (response.status === '3') {
@@ -183,7 +177,7 @@ $(() => {
                     } else {
                         swal({
                             title: "Atenção!",
-                            html: 'Não foi possível validar seu pagamento no momento. Tente novamente.',
+                            html: 'Não foi possível validar seu pagamento no momento. Entre em contato conosco para mais informações, ou tente novamente.',
                             type: "warning",
                             confirmButtonText: "Concluir",
                             allowOutsideClick: false
